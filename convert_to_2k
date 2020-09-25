@@ -1,0 +1,11 @@
+#!/bin/bash -x
+export IFS=$'\n'
+file=$1
+stream=`ffprobe -v error -select_streams v:0 -show_entries stream=width,height -i "$file"`
+width=`echo $stream | cut -d " " -f 2 | cut -d "=" -f 2`
+height=`echo $stream | cut -d " " -f 3 | cut -d "=" -f 2`
+
+if [ $height -gt 1080 ] ; then
+	echo 'over 2k'
+	ffmpeg -i -y ${file} -vf scale=-1:1080 "2k_"${file} && rm -f ${file}
+fi
