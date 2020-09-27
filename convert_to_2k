@@ -19,7 +19,7 @@ fi
 TARGET_DIR==$1
 
 ##
-EXTLIST=`cat /etc/mime.types | grep -v "#" | grep video | grep -v mp4 | grep -v mkv | grep -v avi | tr "\t" " " | tr -s " " | cut -d " " -f 2 | grep -v "/" | sort | uniq`
+EXTLIST=`cat /etc/mime.types | grep -v "#" | grep video | tr "\t" " " | tr -s " " | cut -d " " -f 2 | grep -v "/" | sort | uniq`
 EXTLIST+=(
 "mov"
 "avi.mp4"
