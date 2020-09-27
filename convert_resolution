@@ -11,12 +11,16 @@ if [ ${_pcnt} -gt 1 ]; then
 fi
 
 ##
-if [ $# -ne 1 ]; then
-	echo "Usage : ${CMDNAME} [directry]"
+if [ $# -ne 1 ] && [ $# -ne 2 ] ; then
+	echo "Usage : ${CMDNAME} [directry] [virtical resolution: ex. 720 / 1080 / 2160 / 4320]"
 	exit 1
 fi
 
 TARGET_DIR=$1
+VIRTICAL_RESOLUTION=1080
+if [ $# -eq 2 ] ; then
+	VIRTICAL_RESOLUTION=$2	
+fi
 
 ##
 EXTLIST=`cat /etc/mime.types | grep -v "#" | grep video | tr "\t" " " | tr -s " " | cut -d " " -f 2 | grep -v "/" | sort | uniq`
@@ -50,9 +54,8 @@ do
 		stream=`ffprobe -v error -select_streams v:0 -show_entries stream=width,height -i "${FILENAME}"`
 		width=`echo $stream | cut -d " " -f 2 | cut -d "=" -f 2`
 		height=`echo $stream | cut -d " " -f 3 | cut -d "=" -f 2`
-		if [ $height -gt 1080 ] ; then
-			echo 'over 2k'
-			ffmpeg -i -y ${FILENAME} -vf scale=-1:1080 "2k_"${file} || continue
+		if [ $height -gt ${VIRTICAL_RESOLUTION} ] ; then
+			ffmpeg -i -y ${FILENAME} -vf scale=-1:${VIRTICAL_RESOLUTION} ${FILENAME%.${EXT}}_${VIRTICAL_RESOLUTION}p.mp4 || continue
 		       	rm -f ${FILENAME}
 		fi
 	done
