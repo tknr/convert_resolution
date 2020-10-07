@@ -56,7 +56,6 @@ do
 		height=`echo $stream | cut -d " " -f 3 | cut -d "=" -f 2`
 		if [ $height -gt ${VIRTICAL_RESOLUTION} ] ; then
 			ffmpeg -i -y ${FILENAME} -movflags +faststart -vf format=yuv420p scale=-1:${VIRTICAL_RESOLUTION} ${FILENAME%.${EXT}}_${VIRTICAL_RESOLUTION}p.mp4 || continue
-			mv ${FILENAME%.${EXT}}_${VIRTICAL_RESOLUTION}p.mp4 ${FILENAME} || continue
 		       	rm -f ${FILENAME}
 		fi
 	done
