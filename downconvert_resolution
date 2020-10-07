@@ -52,8 +52,8 @@ do
 	for FILENAME in `find "${TARGET_DIR}" -name "*.${EXT}" | sort`
 	do	       
 		stream=`ffprobe -v error -select_streams v:0 -show_entries stream=width,height -i "${FILENAME}"`
-		width=`echo $stream | cut -d " " -f 2 | cut -d "=" -f 2`
-		height=`echo $stream | cut -d " " -f 3 | cut -d "=" -f 2`
+		width=`echo $stream | grep -o width=[0-9]* | grep -o [0-9]*`
+		height=`echo $stream | grep -o height=[0-9]* | grep -o [0-9]*`
 		if [[ "$height" =~ ^[0-9]+$ ]];then
 			if [ $height -gt ${VIRTICAL_RESOLUTION} ] ; then
 				ffmpeg -y -i ${FILENAME} -movflags +faststart -pix_fmt yuv420p -vf scale=-1:${VIRTICAL_RESOLUTION} ${FILENAME%.${EXT}}_dc${VIRTICAL_RESOLUTION}p.mp4 || continue
