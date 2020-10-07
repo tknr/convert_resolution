@@ -1,4 +1,4 @@
-# convert_resolution
+# downconvert_resolution
 
 ## reference
 
