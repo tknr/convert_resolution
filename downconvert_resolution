@@ -56,7 +56,7 @@ do
 		height=`echo $stream | grep -o height=[0-9]* | grep -o [0-9]*`
 		if [[ "$height" =~ ^[0-9]+$ ]];then
 			if [ $height -gt ${VIRTICAL_RESOLUTION} ] ; then
-				ffmpeg -y -i ${FILENAME} -movflags +faststart -pix_fmt yuv420p -vf scale=-2:${VIRTICAL_RESOLUTION}:flags=lanczos+accurate_rnd ${FILENAME%.${EXT}}_dc${VIRTICAL_RESOLUTION}p.mp4 || continue
+				ffmpeg -y -i ${FILENAME} -movflags +faststart -pix_fmt yuv420p -vf "scale=-2:${VIRTICAL_RESOLUTION}:flags=lanczos+accurate_rnd,pp=de" ${FILENAME%.${EXT}}_dc${VIRTICAL_RESOLUTION}p.mp4 || continue
 		       		rm -f ${FILENAME}
 			fi
 		else
